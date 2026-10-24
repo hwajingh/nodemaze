@@ -12,23 +12,34 @@ public class Maze {
 
         Scanner sc = new Scanner(System.in);
         Node node = a;
-        while(node.symbol != 'L') {
+        while (node != null && node.symbol != 'L') {
             printMessage(node);
             String direction = sc.nextLine();
-            switch(direction) {
-                case "N": case "n" :
-
-                    node = node.up;
+            // FIX: only move when the edge exists. Previously moving in a
+            // direction with no edge set node = null, and the next loop
+            // iteration dereferenced node.symbol -> NullPointerException.
+            Node next = null;
+            switch (direction) {
+                case "N": case "n":
+                    next = node.up;
                     break;
                 case "E": case "e":
-                    node = node.right;
+                    next = node.right;
                     break;
                 case "S": case "s":
-                    node = node.down;
+                    next = node.down;
                     break;
                 case "W": case "w":
-                    node = node.left;
+                    next = node.left;
                     break;
+                default:
+                    System.out.println("Unknown direction. Use N/E/S/W.");
+                    continue;
+            }
+            if (next == null) {
+                System.out.println("No passage that way.");
+            } else {
+                node = next;
             }
         }
         System.out.print("You escaped the maze.");
