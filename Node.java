@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
     Node up = null;
     Node down = null;
@@ -26,13 +29,15 @@ public class Node {
     }
 
     public String outputEdges() {
-        String res = "";
-        if(up != null) res += "North or ";
-        if(down != null) res += "South or ";
-        if(right != null) res += "East or ";
-        if(left != null) res += "West or ";
-        if(res.charAt(res.length() - 3) == 'o') res = res.substring(0, res.length() - 3);
-        return res;
+        // FIX: the original did res.charAt(res.length() - 3) with no guard,
+        // crashing on a room with no edges, and hand-trimmed " or ".
+        // Build a list and join it instead.
+        List<String> parts = new ArrayList<>();
+        if (up != null) parts.add("North");
+        if (down != null) parts.add("South");
+        if (right != null) parts.add("East");
+        if (left != null) parts.add("West");
+        return String.join(" or ", parts);
     }
 
 }
